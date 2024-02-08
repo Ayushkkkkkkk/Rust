@@ -332,32 +332,89 @@
 
 // reference and borrowing
 
-fn main() {
+// fn main() {
 
-}
+// }
 
-fn reference_and_borrowing() {
-    let s1 = String::from("hello");
+// fn reference_and_borrowing() {
+//     let s1 = String::from("hello");
 
-    let len = calculate_length(&s1);
+//     let len = calculate_length(&s1);
 
-    println!("The length of '{}' is {}.", s1, len);
-}
+//     println!("The length of '{}' is {}.", s1, len);
+// }
 
-fn calculate_length(s: &String) -> usize {
+// fn calculate_length(s: &String) -> usize {
+//     s.len()
+// }
+
+// fn change(some_string: &mut String) {
+//     some_string.push_str(", world");
+// }
+
+// fn dangeling_references(){
+//     let reference_to_nothing = dangle();
+// }
+
+// fn dangle() -> &String {
+//     let s = String::from("hello");
+
+//     s
+// }
+
+// The slice type
+fn main() {}
+
+fn first_word(s: &String) -> usize {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return i;
+        }
+    }
+
     s.len()
 }
 
-fn change(some_string: &mut String) {
-    some_string.push_str(", world");
+fn string_slices() {
+    let s = String::from("hello world");
+
+    let hello = &s[0..5];
+    let world = &s[6..11];
 }
 
-fn dangeling_references(){
-    let reference_to_nothing = dangle();
+fn first_word_with_slice(s: &String) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
 }
 
-fn dangle() -> &String {
-    let s = String::from("hello");
+// fn string_literal_slice() {
+//     let my_string = String::from("hello world");
 
-    s
-}
+//     // `first_word` works on slices of `String`s, whether partial or whole
+//     let word = first_word(&my_string[0..6]);
+//     let word = first_word(&my_string[..]);
+//     // `first_word` also works on references to `String`s, which are equivalent
+//     // to whole slices of `String`s
+//     let word = first_word(&my_string);
+
+//     let my_string_literal = "hello world";
+
+//     // `first_word` works on slices of string literals, whether partial or whole
+//     let word = first_word(&my_string_literal[0..6]);
+//     let word = first_word(&my_string_literal[..]);
+
+//     // Because string literals *are* string slices already,
+//     // this works too, without the slice syntax!
+//     let word = first_word(my_string_literal);
+// }
+
+
