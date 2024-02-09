@@ -471,3 +471,9 @@
 //         sign_in_count: 1,
 //     }
 // }
+
+
+// Method syntax
+fn main(){
+
+}
