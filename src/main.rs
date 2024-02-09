@@ -417,6 +417,57 @@
 // //     let word = first_word(my_string_literal);
 // // }
 
-fn main(){
-    
+// struct in Rust
+
+struct User {
+    active: bool,
+    username: String,
+    email: String,
+    sign_in_count: u64,
+}
+
+struct Color(i32, i32, i32);
+struct Point(i32, i32, i32);
+
+struct AlwaysEqual;
+
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+fn main() {
+    let user1 = User {
+        active: true,
+        username: String::from("someusername123"),
+        email: String::from("someone@example.com"),
+        sign_in_count: 1,
+    };
+
+    let user2 = User {
+        email: String::from("another@example.com"),
+        ..user1
+    };
+
+    let black = Color(0, 0, 0);
+    let origin = Point(0, 0, 0);
+
+    let subject = AlwaysEqual;
+
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!("rect1 is {:?}", rect1);
+}
+
+fn build_user(email: String, username: String) -> User {
+    User {
+        active: true,
+        username: username,
+        email: email,
+        sign_in_count: 1,
+    }
 }
