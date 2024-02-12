@@ -653,6 +653,109 @@
 // }
 
 
-fn main(){
-    
+use std::collections::{BinaryHeap, HashMap};
+use std::cmp::Ordering;
+
+// Struct representing a vertex in the graph
+#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
+struct Vertex {
+    id: usize,
+}
+
+// Struct representing an edge in the graph
+#[derive(Debug)]
+struct Edge {
+    target: Vertex,
+    weight: i32,
+}
+
+// Struct representing a graph
+struct Graph {
+    edges: HashMap<Vertex, Vec<Edge>>,
+}
+
+impl Graph {
+    // Function to create a new empty graph
+    fn new() -> Self {
+        Graph {
+            edges: HashMap::new(),
+        }
+    }
+
+    // Function to add a directed edge to the graph
+    fn add_edge(&mut self, source: Vertex, target: Vertex, weight: i32) {
+        self.edges.entry(source).or_insert(Vec::new()).push(Edge { target, weight });
+    }
+
+    // Function to get neighbors of a vertex
+    fn neighbors(&self, vertex: Vertex) -> Option<&Vec<Edge>> {
+        self.edges.get(&vertex)
+    }
+}
+
+// Struct representing a state in Dijkstra's algorithm
+#[derive(Debug, PartialEq, Eq)]
+struct State {
+    vertex: Vertex,
+    cost: i32,
+}
+
+// Implementation of ordering for State
+impl Ord for State {
+    fn cmp(&self, other: &Self) -> Ordering {
+        other.cost.cmp(&self.cost)
+    }
+}
+
+// Implementation of partial ordering for State
+impl PartialOrd for State {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+// Function to find shortest paths using Dijkstra's algorithm
+fn dijkstra(graph: &Graph, start: Vertex) -> HashMap<Vertex, i32> {
+    let mut distances: HashMap<Vertex, i32> = HashMap::new();
+    let mut heap = BinaryHeap::new();
+
+    distances.insert(start, 0);
+    heap.push(State { vertex: start, cost: 0 });
+
+    while let Some(State { vertex, cost }) = heap.pop() {
+        if let Some(neighbors) = graph.neighbors(vertex) {
+            for edge in neighbors {
+                let next = State { vertex: edge.target, cost: cost + edge.weight };
+                if !distances.contains_key(&next.vertex) || next.cost < *distances.get(&next.vertex).unwrap() {
+                    distances.insert(next.vertex, next.cost);
+                    heap.push(next);
+                }
+            }
+        }
+    }
+
+    distances
+}
+
+fn main() {
+    let mut graph = Graph::new();
+    let v0 = Vertex { id: 0 };
+    let v1 = Vertex { id: 1 };
+    let v2 = Vertex { id: 2 };
+    let v3 = Vertex { id: 3 };
+
+    graph.add_edge(v0, v1, 1);
+    graph.add_edge(v0, v2, 4);
+    graph.add_edge(v1, v2, 2);
+    graph.add_edge(v1, v3, 5);
+    graph.add_edge(v2, v3, 1);
+
+    let start_vertex = v0;
+
+    let shortest_paths = dijkstra(&graph, start_vertex);
+
+    println!("Shortest paths from {:?}:", start_vertex);
+    for (vertex, distance) in shortest_paths {
+        println!("To {:?}: {}", vertex, distance);
+    }
 }
