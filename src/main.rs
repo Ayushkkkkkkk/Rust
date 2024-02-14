@@ -652,9 +652,9 @@
 //     }
 // }
 
-
-use std::collections::{BinaryHeap, HashMap};
 use std::cmp::Ordering;
+use std::collections::{BinaryHeap, HashMap};
+use std::fmt::Binary;
 
 // Struct representing a vertex in the graph
 #[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
@@ -684,7 +684,10 @@ impl Graph {
 
     // Function to add a directed edge to the graph
     fn add_edge(&mut self, source: Vertex, target: Vertex, weight: i32) {
-        self.edges.entry(source).or_insert(Vec::new()).push(Edge { target, weight });
+        self.edges
+            .entry(source)
+            .or_insert(Vec::new())
+            .push(Edge { target, weight });
     }
 
     // Function to get neighbors of a vertex
@@ -714,19 +717,28 @@ impl PartialOrd for State {
     }
 }
 
+
 // Function to find shortest paths using Dijkstra's algorithm
 fn dijkstra(graph: &Graph, start: Vertex) -> HashMap<Vertex, i32> {
     let mut distances: HashMap<Vertex, i32> = HashMap::new();
     let mut heap = BinaryHeap::new();
 
     distances.insert(start, 0);
-    heap.push(State { vertex: start, cost: 0 });
+    heap.push(State {
+        vertex: start,
+        cost: 0,
+    });
 
     while let Some(State { vertex, cost }) = heap.pop() {
         if let Some(neighbors) = graph.neighbors(vertex) {
             for edge in neighbors {
-                let next = State { vertex: edge.target, cost: cost + edge.weight };
-                if !distances.contains_key(&next.vertex) || next.cost < *distances.get(&next.vertex).unwrap() {
+                let next = State {
+                    vertex: edge.target,
+                    cost: cost + edge.weight,
+                };
+                if !distances.contains_key(&next.vertex)
+                    || next.cost < *distances.get(&next.vertex).unwrap()
+                {
                     distances.insert(next.vertex, next.cost);
                     heap.push(next);
                 }
@@ -758,4 +770,9 @@ fn main() {
     for (vertex, distance) in shortest_paths {
         println!("To {:?}: {}", vertex, distance);
     }
+}
+
+
+fn add(){
+    
 }
