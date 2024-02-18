@@ -650,9 +650,29 @@
 //     } else {
 //         count += 1;
 //     }
+// };
+// vector
+//     enum SpreadsheetCell {
+//         Int(i32),
+//         Float(f64),
+//         Text(String),
+//     }
+//
+//     let row = vec![
+//         SpreadsheetCell::Int(3),
+//         SpreadsheetCell::Text(String::from("blue")),
+//         SpreadsheetCell::Float(10.12),
+//     ];
+
+// v.push(9);
+//}
+
+// fn main() {
+//     let mut s = String::new();
+//     let data = "initial contents";
+//     let s = data.to_string();
+//     // the method also works on a literal directly:
+//     let s = "initial contents".to_string();
 // }
 
-fn main() {
-    let mut a = 90;
-    a = 80;
-}
+fn main() {}
