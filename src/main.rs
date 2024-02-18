@@ -652,6 +652,7 @@
 //     }
 // }
 
-fn main(){
-    
+fn main() {
+    let mut a = 90;
+    a = 80;
 }
